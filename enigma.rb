@@ -26,26 +26,38 @@ def caesar(array, number)
   message_shifted = []
   array.each_with_index do |letter, index|
     former_index = ALPHABET.index(letter)
-    new_letter = ALPHABET[former_index + number + index]
+    new_index = new_index(former_index, number, index)
+    new_letter = ALPHABET[new_index]
     message_shifted << new_letter
   end
   message_shifted
 end
 
+def new_index(former_index, number, index)
+  # si l'addition dépasse 26, alors on repare de 0
+  new_index = former_index + number + index
+  solution = 0
+  if new_index > 25
+    solution += new_index % 26
+  else
+    solution += new_index
+  end
+  solution
+end
+
 def rotoring(message, model)
   new_message = []
-  message.each_with_index do |letter, index|
-    new_message << model[index]
+  message.each do |letter|
+    index_in_alphabet = ALPHABET.index(letter)
+    new_letter = model[index_in_alphabet]
+    new_message << new_letter
   end
   new_message
 end
 
 case operation
 when 'ENCODE'
-  answer = encode(message, pseudo_random_number, rotors)
-  puts answer
+  puts encode(message, pseudo_random_number, rotors)
 when 'DECODE'
   puts 'DECODE'
 end
-
-# To debug: STDERR.puts "Debug messages..."
