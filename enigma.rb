@@ -30,8 +30,9 @@ def decode(message, pseudo_random_number, rotors)
   message2 = de_rotoring(message1, rotors[1])
   message_de_rotored = de_rotoring(message2, rotors[0])
   # étape 4 : Caesar de-shift | message_de_rotored + nb => array 'message_de_shifted'
+  message_de_shifted = de_ceasar(message_de_rotored, pseudo_random_number)
   # étape 5 : compiler dans une string | message_de_shifted => string
-  message_de_rotored.join
+  message_de_shifted.join
 end
 
 def caesar(array, number)
@@ -49,8 +50,8 @@ def de_ceasar(array, number)
   message_shifted = []
   array.each_with_index do |letter, index|
     former_index = ALPHABET.index(letter)
-    # new_index = new_decode_index(former_index, number, index)
-    new_index = former_index - number - index
+    new_index = new_decode_index(former_index, number, index)
+    # new_index = former_index - number - index
     new_letter = ALPHABET[new_index]
     message_shifted << new_letter
   end
@@ -69,16 +70,16 @@ def new_code_index(former_index, number, index)
   solution
 end
 
-# def new_decode_index(former_index, number, index)
-#   new_index = former_index - number - index
-#   solution = 0
-#   if new_index.negative?
-#     solution += new_index % 26
-#   else
-#     solution += new_index
-#   end
-#   solution
-# end
+def new_decode_index(former_index, number, index)
+  new_index = former_index - number - index
+  solution = 0
+  if new_index.negative?
+    solution += new_index % 26
+  else
+    solution += new_index
+  end
+  solution
+end
 
 def rotoring(message, model)
   new_message = []
