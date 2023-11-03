@@ -30,12 +30,31 @@ def char(boolean)
 end
 
 def andmethod(one, two)
-  # prend 2 strings et compare chaque caractère un par un
   new_string = " "
   one.split('').each_with_index do |char, index|
     boo1 = trueOrFalse(char)
     boo2 = trueOrFalse(two[index])
     new_string += char(boo1 && boo2)
+  end
+  new_string
+end
+
+def ormethod(one, two)
+  new_string = " "
+  one.split('').each_with_index do |char, index|
+    boo1 = trueOrFalse(char)
+    boo2 = trueOrFalse(two[index])
+    new_string += char(boo1 || boo2)
+  end
+  new_string
+end
+
+def onemethod(one, two, verb)
+  new_string = " "
+  one.split('').each_with_index do |char, index|
+    boo1 = trueOrFalse(char)
+    boo2 = trueOrFalse(two[index])
+    new_string += char(boo1 || boo2)
   end
   new_string
 end
@@ -48,6 +67,8 @@ outputs.each do |output|
   case output[1]
   when "AND"
     answer += andmethod(inputs[output[2]], inputs[output[3]])
+  when "OR"
+    answer += ormethod(inputs[output[2]], inputs[output[3]])
   end
   puts output[0] + answer
 end
