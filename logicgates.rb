@@ -54,7 +54,12 @@ def onemethod(one, two, verb)
   one.split('').each_with_index do |char, index|
     boo1 = trueOrFalse(char)
     boo2 = trueOrFalse(two[index])
-    new_string += char(boo1 || boo2)
+    case verb
+    when "AND"
+      new_string += char(boo1 && boo2)
+    when "OR"
+      new_string += char(boo1 || boo2)
+    end
   end
   new_string
 end
@@ -66,9 +71,11 @@ outputs.each do |output|
   answer = ""
   case output[1]
   when "AND"
-    answer += andmethod(inputs[output[2]], inputs[output[3]])
+    # answer += andmethod(inputs[output[2]], inputs[output[3]])
+    answer += onemethod(inputs[output[2]], inputs[output[3]], output[1])
   when "OR"
-    answer += ormethod(inputs[output[2]], inputs[output[3]])
+    # answer += ormethod(inputs[output[2]], inputs[output[3]])
+    answer += onemethod(inputs[output[2]], inputs[output[3]], output[1])
   end
   puts output[0] + answer
 end
