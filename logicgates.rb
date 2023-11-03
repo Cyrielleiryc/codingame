@@ -29,16 +29,11 @@ def char(boolean)
   return boolean ? "-" : "_"
 end
 
-def onemethod(one, two, verb, boolean)
+def onemethod(one, two, verb)
   new_string = " "
   one.split('').each_with_index do |char, index|
-    if boolean
-      boo1 = trueOrFalse(char)
-      boo2 = trueOrFalse(two[index])
-    else
-      boo1 = !trueOrFalse(char)
-      boo2 = !trueOrFalse(two[index])
-    end
+    boo1 = trueOrFalse(char)
+    boo2 = trueOrFalse(two[index])
     case verb
     when "AND"
       new_string += char(boo1 && boo2)
@@ -46,6 +41,12 @@ def onemethod(one, two, verb, boolean)
       new_string += char(boo1 || boo2)
     when "XOR"
       new_string += char(boo1 ^ boo2)
+    when "NAND"
+      new_string += char(!(boo1 && boo2))
+    when "NOR"
+      new_string += char(!(boo1 || boo2))
+    when "NXOR"
+      new_string += char(!(boo1 ^ boo2))
     end
   end
   new_string
@@ -56,8 +57,6 @@ end
 
 outputs.each do |output|
   answer = ""
-  boolean = output[1][0] != "N"
-  verb = boolean ? output[1] : output[1][1..-1]
-  answer += onemethod(inputs[output[2]], inputs[output[3]], verb, boolean)
+  answer += onemethod(inputs[output[2]], inputs[output[3]], output[1])
   puts output[0] + answer
 end
