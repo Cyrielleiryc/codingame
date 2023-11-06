@@ -42,13 +42,7 @@ end
 
 # étape 4 : si plusieurs t°, ne sortir que la positive
 def only_one_temperature(temperatures)
-  t = 0
-  if temperatures.size == 1
-    t = temperatures[0]
-  else
-    t = manage_many_temps(temperatures)
-  end
-  t
+  temperatures.size == 1 ? temperatures[0] : manage_many_temps(temperatures)
 end
 
 def manage_many_temps(temperatures)
