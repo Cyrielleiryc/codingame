@@ -55,6 +55,9 @@ end
 
 # étape X : donner la réponse
 def answer(inputs)
+  if inputs.size == 0
+    return 0
+  end
   indexes = indexes_small_gap(deltas(inputs))
   temperatures = temperatures_small_gap(indexes, inputs)
   only_one_temperature(temperatures)
