@@ -11,9 +11,56 @@ end
 # # # Code to compute the answer # # #
 # # # # # # # # # # # # # # # # # # # # #
 
+# transformation de toutes les t° en integer
+inputs = inputs.map { |t| t.to_i }
 
+# étape 1 : créer un autre tableau (map) avec le delta entre la t° et 0
+def deltas(inputs)
+  inputs.map { |t| t < 0 ? -t : t }
+end
+
+# étape 2 : récupérer les indexes des plus petits écarts => array
+def indexes_small_gap(deltas)
+  indexes = []
+  # trouver le plus petit écart
+  min = deltas.min
+  # itérer sur les deltas pour trouver tous les indexes des écarts égaux à min
+  deltas.each_with_index do |t, i|
+    indexes << i if t == min
+  end
+  indexes
+end
+
+# étape 3 : récupérer dans un tableau la ou les t° associées aux indexes
+def temperatures_small_gap(indexes, inputs)
+  temperatures = []
+  indexes.each do |i|
+    temperatures << inputs[i]
+  end
+  temperatures
+end
+
+# étape 4 : si plusieurs t°, ne sortir que la positive
+def only_one_temperature(temperatures)
+  t = 0
+  if temperatures.size > 1
+    temperatures.each do |temp|
+      t = temp if temp > 0
+    end
+  else
+    t = temperatures[0]
+  end
+  t
+end
+
+# étape X : donner la réponse
+def answer(inputs)
+  indexes = indexes_small_gap(deltas(inputs))
+  temperatures = temperatures_small_gap(indexes, inputs)
+  only_one_temperature(temperatures)
+end
 
 # # # Code to print the answer  # # #
 # # # # # # # # # # # # # # # # # # #
 
-puts inputs[-1]
+puts answer(inputs)
