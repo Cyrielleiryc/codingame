@@ -43,21 +43,27 @@ end
 # étape 4 : si plusieurs t°, ne sortir que la positive
 def only_one_temperature(temperatures)
   t = 0
-  if temperatures.size > 1
-    temperatures.each do |temp|
-      t = temp if temp > 0
-    end
-  else
+  if temperatures.size == 1
     t = temperatures[0]
+  else
+    t = manage_many_temps(temperatures)
   end
+  t
+end
+
+def manage_many_temps(temperatures)
+  t = 0
+  temperatures.each do |temp|
+    t = temp if temp.positive?
+  end
+  t = temperatures[0] if t.zero?
   t
 end
 
 # étape X : donner la réponse
 def answer(inputs)
-  if inputs.size == 0
-    return 0
-  end
+  return 0 if inputs.empty?
+
   indexes = indexes_small_gap(deltas(inputs))
   temperatures = temperatures_small_gap(indexes, inputs)
   only_one_temperature(temperatures)
