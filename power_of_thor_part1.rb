@@ -9,25 +9,51 @@ STDOUT.sync = true # DO NOT REMOVE
 # initial_tx: Thor's starting X position
 # initial_ty: Thor's starting Y position
 light_x, light_y, initial_tx, initial_ty = gets.split.map { |x| x.to_i }
+thor = { x: initial_tx, y: initial_ty } # thor[:x] or thor[:y]
 
 # game loop
 loop do
   remaining_turns = gets.to_i # The remaining amount of turns Thor can move. Do not remove this line.
   direction = ""
-  thor = { x: initial_tx, y: initial_ty } # thor[:x] or thor[:y]
+
+  # comparaisons
+  thor_should_go_west = thor[:x] > light_x
+  thor_should_go_north = thor[:y] > light_y
 
   # Thor et l'éclair sont sur la même colonne
   if thor[:x] == light_x
-    direction = thor[:y] - light_y >= 0 ? "N" : "S"
+    direction = thor_should_go_north ? "N" : "S"
+  elsif thor[:y] == light_y
+    direction = thor_should_go_west ? "W" : "E"
+  elsif thor_should_go_west
+    direction = thor_should_go_north ? "NW" : "SW"
+  else
+    direction = thor_should_go_north ? "NE" : "SE"
   end
 
-  # Thor et l'éclair sont sur la même ligne
-  if thor[:y] == light_y
-    direction = thor[:x] - light_x >= 0 ? "W" : "E"
+  case direction
+  when "N"
+    thor[:y] -= 1
+  when "S"
+    thor[:y] += 1
+  when "W"
+    thor[:x] -= 1
+  when "E"
+    thor[:x] += 1
+  when "NW"
+    thor[:y] -= 1
+    thor[:x] -= 1
+  when "SW"
+    thor[:y] += 1
+    thor[:x] -= 1
+  when "NE"
+    thor[:y] -= 1
+    thor[:x] += 1
+  when "SE"
+    thor[:y] += 1
+    thor[:x] += 1
   end
 
+  # gives the computer the direction for the next move
   puts direction
 end
-
-# A single line IN THE LOOP providing the move to be made: N NE E SE S SW W or NW
-# puts "SE"
