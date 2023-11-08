@@ -12,9 +12,6 @@ end
 # # # # # # # # # # # # # # # # # # # # #
 
 # étape 1 : ranger les puissances dans l'ordre croissant
-def sort(tableau)
-  tableau.sort
-end
 
 # étape 2 : itérer sur les puissances et en sortir la différence des 2 => tableau
 # supprimer la valeur négative (la première)
@@ -25,15 +22,14 @@ def deltas(tableau)
   end
   deltas[1..-1]
 end
+
 # étape 3 : trouver la différence la plus faible et la donner en réponse
 
-# étape X : combiner les étapes
+# étape 4 : combiner les étapes
 def answer(horses)
-  pis_sorted = sort(horses)
-  deltas = deltas(pis_sorted)
-  deltas
+  deltas = deltas(horses.sort)
+  deltas.min
 end
-
 
 # # # Code to print the answer  # # #
 # # # # # # # # # # # # # # # # # # #
