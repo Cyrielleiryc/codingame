@@ -12,40 +12,40 @@ end
 
 outputs = []
 m.times do
-  output_name, type, input_name_1, input_name_2 = gets.split
-  outputs << [output_name, type, input_name_1, input_name_2]
+  output_name, type, input_name1, input_name2 = gets.split
+  outputs << [output_name, type, input_name1, input_name2]
   # => outputs[0] = ["C", "AND", "A", "B"]
 end
 
 # # # Code to implemente the answer # # #
 # # # # # # # # # # # # # # # # # # # # #
 
-def trueOrFalse(char)
-  return char == "-"
+def true_or_false(char)
+  char == '-'
   # '_' => false // '-' => true
 end
 
 def char(boolean)
-  return boolean ? "-" : "_"
+  boolean ? '-' : '_'
 end
 
 def onemethod(one, two, verb)
-  new_string = " "
+  new_string = ' '
   one.split('').each_with_index do |char, index|
-    boo1 = trueOrFalse(char)
-    boo2 = trueOrFalse(two[index])
+    boo1 = true_or_false(char)
+    boo2 = true_or_false(two[index])
     case verb
-    when "AND"
+    when 'AND'
       new_string += char(boo1 && boo2)
-    when "OR"
+    when 'OR'
       new_string += char(boo1 || boo2)
-    when "XOR"
+    when 'XOR'
       new_string += char(boo1 ^ boo2)
-    when "NAND"
+    when 'NAND'
       new_string += char(!(boo1 && boo2))
-    when "NOR"
+    when 'NOR'
       new_string += char(!(boo1 || boo2))
-    when "NXOR"
+    when 'NXOR'
       new_string += char(!(boo1 ^ boo2))
     end
   end
@@ -56,7 +56,7 @@ end
 # # # # # # # # # # # # # # # # # # #
 
 outputs.each do |output|
-  answer = ""
+  answer = ''
   answer += onemethod(inputs[output[2]], inputs[output[3]], output[1])
   puts output[0] + answer
 end
