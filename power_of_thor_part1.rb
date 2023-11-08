@@ -18,20 +18,12 @@ loop do
 
   # Thor et l'éclair sont sur la même colonne
   if thor[:x] == light_x
-    if thor[:y] - light_y >= 0
-      direction = "N"
-    else
-      direction = "S"
-    end
+    direction = thor[:y] - light_y >= 0 ? "N" : "S"
   end
 
   # Thor et l'éclair sont sur la même ligne
   if thor[:y] == light_y
-    if thor[:x] - light_x >= 0
-      direction = "W"
-    else
-      direction = "E"
-    end
+    direction = thor[:x] - light_x >= 0 ? "W" : "E"
   end
 
   puts direction
