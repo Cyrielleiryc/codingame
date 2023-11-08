@@ -13,11 +13,18 @@ light_x, light_y, initial_tx, initial_ty = gets.split.map { |x| x.to_i }
 # game loop
 loop do
   remaining_turns = gets.to_i # The remaining amount of turns Thor can move. Do not remove this line.
+  direction = ""
+  thor = { x: initial_tx, y: initial_ty } # thor[:x] or thor[:y]
 
-  # Write an action using puts
-  # To debug: STDERR.puts "Debug messages..."
-
-
-  # A single line providing the move to be made: N NE E SE S SW W or NW
-  puts "SE"
+  if thor[:x] == light_x
+    if thor[:y] - light_y >= 0
+      direction = "N"
+    else 
+      direction = "S"
+    end
+  end
+  puts direction
 end
+
+# A single line IN THE LOOP providing the move to be made: N NE E SE S SW W or NW
+# puts "SE"
