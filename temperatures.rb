@@ -3,20 +3,21 @@
 
 n = gets.to_i # the number of temperatures to analyse
 inputs = gets.split # array of temperatures
-for i in 0..(n-1)
+(0..n - 1).to_a.each do |i|
+  # for i in 0..(n-1)
   # t: a temperature expressed as an integer ranging from -273 to 5526
-  t = inputs[i].to_i
+  inputs[i].to_i
 end
 
 # # # Code to compute the answer # # #
 # # # # # # # # # # # # # # # # # # # # #
 
 # transformation de toutes les t° en integer
-inputs = inputs.map { |t| t.to_i }
+inputs = inputs.map(&:to_i)
 
 # étape 1 : créer un autre tableau (map) avec le delta entre la t° et 0
 def deltas(inputs)
-  inputs.map { |t| t < 0 ? -t : t }
+  inputs.map { |t| t.negative? ? -t : t }
 end
 
 # étape 2 : récupérer les indexes des plus petits écarts => array
