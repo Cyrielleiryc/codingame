@@ -16,13 +16,24 @@ loop do
   direction = ""
   thor = { x: initial_tx, y: initial_ty } # thor[:x] or thor[:y]
 
+  # Thor et l'éclair sont sur la même colonne
   if thor[:x] == light_x
     if thor[:y] - light_y >= 0
       direction = "N"
-    else 
+    else
       direction = "S"
     end
   end
+
+  # Thor et l'éclair sont sur la même ligne
+  if thor[:y] == light_y
+    if thor[:x] - light_x >= 0
+      direction = "W"
+    else
+      direction = "E"
+    end
+  end
+
   puts direction
 end
 
