@@ -21,9 +21,14 @@ end
 
 # étape 3 : trouver la différence la plus faible et la donner en réponse
 
-# étape X : combiner les étapes 
+# étape X : combiner les étapes
+def answer(horses)
+  pis_sorted = sort(horses)
+  pis_sorted
+end
+
 
 # # # Code to print the answer  # # #
 # # # # # # # # # # # # # # # # # # #
 
-puts horses
+puts answer(horses)
