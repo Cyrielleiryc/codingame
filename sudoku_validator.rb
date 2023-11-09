@@ -1,14 +1,14 @@
 # Getting the grid
-grid = []
-9.times do
-  inputs = gets.split
-  line = []
-  for j in 0..(9-1)
-    n = inputs[j].to_i
-    line << n
+def get_grid
+  grid = []
+  9.times do
+    inputs = gets.split.map(&:to_i)
+    grid << inputs
   end
-  grid << line
+  grid
 end
+
+grid = get_grid
 
 # étape 1 : vérification des lignes
 def are_lines_ok(grid)
@@ -21,14 +21,7 @@ end
 
 # étape 2 : vérification des colonnes en les transformant en lignes
 def are_columns_ok(grid)
-  new_grid = [[], [], [], [], [], [], [], [], []]
-  grid.each do |line|
-    i = 0
-    while i < line.length
-      new_grid[i] << line[i]
-      i += 1
-    end
-  end
+  new_grid = grid.transpose
   are_lines_ok(new_grid)
 end
 
