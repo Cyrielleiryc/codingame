@@ -102,9 +102,14 @@ while players.size != 1
   players = update_players(players, losers)
 end
 
-
+def print_answer(winners)
+  one_winner = winners.to_a # [2, 6, 5, 1]
+  losers = one_winner[0][1..]
+  [one_winner[0][0], losers.join(' ')]
+end
 # réponse apportée
-puts winners
+# winners = {2=>[6, 5, 1]}
+puts print_answer(winners)
 
 # # sortie
   # 2 => numéro du vainqueur
