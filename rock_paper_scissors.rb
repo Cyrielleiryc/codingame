@@ -23,8 +23,40 @@ end
 # méthode pour dire qui a battu qui dans le duel
   # => {vainqueur => [perdant]}           1er round
   # => {vainqueur => [perdant, perdant]}  2e round etc
-  def who_wins(array_of_two_players) # => donne le joueur vainqueur || exemple : {2 => "L"}
-    array_of_two_players[0]
+def who_wins(array_of_two_players) # => donne le joueur vainqueur || exemple : {2 => "L"}
+  player1 = array_of_two_players[0]
+  player2 = array_of_two_players[1]
+  winner = []
+  if player1[:power] == player2[:power]
+    player1[:name] < player2[:name] ? winner << player1 : winner << player2
+    return winner
+  end
+  case player1[:power]
+  when 'C'
+    if player2[:power] == 'P' || player2[:power] == 'L'
+      winner << player1
+    elsif player2[:power] == 'S' || player2[:power] == 'R'
+      winner << player2
+    end
+  when 'P'
+    if player2[:power] == 'R' || player2[:power] == 'S'
+      winner << player1
+    elsif player2[:power] == 'L'
+      winner << player2
+    end
+  when 'R'
+    if player2[:power] == 'L'
+      winner << player1
+    elsif player2[:power] == 'S'
+      winner << player2
+    end
+  when 'L'
+    winner << player1 if player2[:power] == 'S'
+  end
+  unless winner[0]
+    player1[:name] < player2[:name] ? winner << player1 : winner << player2
+  end
+  winner
   end
 
 # méthode pour mettre à jour le tableau des joueurs
@@ -60,8 +92,10 @@ while players.size != 1
   rounds = players.each_slice(2).to_a
   losers = []
   rounds.each do |round|
-    winner = who_wins(round)
-    loser = round.reject! { |player| player == winner }.first
+    winner = who_wins(round)[0]
+    # puts winner
+    loser = round.reject { |player| player == winner }.first
+    # puts loser
     losers << loser
     winners = update_winners(winner, loser, winners)
   end
