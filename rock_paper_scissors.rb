@@ -11,49 +11,23 @@ end
 
 # méthode qui donne le joueur vainqueur || exemple en sortie : [{2 => "L"}]
 def who_wins(array_of_two_players)
-  player1 = array_of_two_players[0]
-  player2 = array_of_two_players[1]
-  winner = []
-  if player1[:power] == player2[:power]
-    winner << handle_tie(player1, player2)
-    return winner
+  player1, player2 = array_of_two_players
+  rules = { 'R' => %w[C L], 'P' => %w[R S], 'C' => %w[P L], 'L' => %w[S P], 'S' => %w[C R] }
+  # si même pouvoir
+  return [handle_tie(player1, player2)] if player1[:power] == player2[:power]
+
+  # gestion de tous les cas de victoire
+  if rules[player1[:power]].include?(player2[:power])
+    return [player1]
+  elsif rules[player2[:power]].include?(player1[:power])
+    return [player2]
   end
-  case player1[:power]
-  when 'R'
-    if player2[:power] == 'C' || player2[:power] == 'L'
-      winner << player1
-    elsif player2[:power] == 'S' || player2[:power] == 'P'
-      winner << player2
-    end
-  when 'P'
-    if player2[:power] == 'R' || player2[:power] == 'S'
-      winner << player1
-    elsif player2[:power] == 'C' || player2[:power] == 'L'
-      winner << player2
-    end
-  when 'C'
-    if player2[:power] == 'P' || player2[:power] == 'L'
-      winner << player1
-    elsif player2[:power] == 'S' || player2[:power] == 'R'
-      winner << player2
-    end
-  when 'L'
-    if player2[:power] == 'S' || player2[:power] == 'P'
-      winner << player1
-    elsif player2[:power] == 'R' || player2[:power] == 'C'
-      winner << player2
-    end
-  when 'S'
-    if player2[:power] == 'C' || player2[:power] == 'R'
-      winner << player1
-    elsif player2[:power] == 'L' || player2[:power] == 'P'
-      winner << player2
-    end
-  end
-  winner << handle_tie(player1, player2) unless winner[0]
-  winner
+
+  # si égalité
+  [handle_tie(player1, player2)]
 end
 
+# méthode qui gère les 2 cas d'égalité pour retourner le plus petit numéro
 def handle_tie(player1, player2)
   player1[:name] < player2[:name] ? player1 : player2
 end
