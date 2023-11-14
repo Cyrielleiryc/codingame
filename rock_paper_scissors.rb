@@ -9,42 +9,53 @@ n.times do
   winners[numplayer] = []
 end
 
-
 # méthode qui donne le joueur vainqueur || exemple en sortie : [{2 => "L"}]
 def who_wins(array_of_two_players)
   player1 = array_of_two_players[0]
   player2 = array_of_two_players[1]
   winner = []
   if player1[:power] == player2[:power]
-    player1[:name] < player2[:name] ? winner << player1 : winner << player2
+    winner << handle_tie(player1, player2)
     return winner
   end
   case player1[:power]
+  when 'R'
+    if player2[:power] == 'C' || player2[:power] == 'L'
+      winner << player1
+    elsif player2[:power] == 'S' || player2[:power] == 'P'
+      winner << player2
+    end
+  when 'P'
+    if player2[:power] == 'R' || player2[:power] == 'S'
+      winner << player1
+    elsif player2[:power] == 'C' || player2[:power] == 'L'
+      winner << player2
+    end
   when 'C'
     if player2[:power] == 'P' || player2[:power] == 'L'
       winner << player1
     elsif player2[:power] == 'S' || player2[:power] == 'R'
       winner << player2
     end
-  when 'P'
-    if player2[:power] == 'R' || player2[:power] == 'S'
-      winner << player1
-    elsif player2[:power] == 'L'
-      winner << player2
-    end
-  when 'R'
-    if player2[:power] == 'L'
-      winner << player1
-    elsif player2[:power] == 'S'
-      winner << player2
-    end
   when 'L'
-    winner << player1 if player2[:power] == 'S'
+    if player2[:power] == 'S' || player2[:power] == 'P'
+      winner << player1
+    elsif player2[:power] == 'R' || player2[:power] == 'C'
+      winner << player2
+    end
+  when 'S'
+    if player2[:power] == 'C' || player2[:power] == 'R'
+      winner << player1
+    elsif player2[:power] == 'L' || player2[:power] == 'P'
+      winner << player2
+    end
   end
-  unless winner[0]
-    player1[:name] < player2[:name] ? winner << player1 : winner << player2
-  end
+  winner << handle_tie(player1, player2) unless winner[0]
   winner
+end
+
+def handle_tie(player1, player2)
+  player1[:name] < player2[:name] ? player1 : player2
 end
 
 # méthode pour mettre à jour le tableau des joueurs en supprimant les perdants
@@ -91,25 +102,3 @@ end
 
 # réponse apportée
 puts print_answer(winners)
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# # rules
-  # Scissors cuts Paper           C > P
-  # Paper covers Rock             P > R
-  # Rock crushes Lizard           R > L
-  # Lizard poisons Spock          L > S
-  # Spock smashes Scissors        S > C
-  # Scissors decapitates Lizard   C > L
-  # Lizard eats Paper             L > P
-  # Paper disproves Spock         P > S
-  # Spock vaporizes Rock          S > R
-  # Rock crushes Scissors         R > C
-  # and in case of a tie, the player with the lowest number wins
-
-# # code
-  # Rock (R)
-  # Paper (P)
-  # sCissors (C)
-  # Lizard (L)
-  # Spock (S)
