@@ -1,7 +1,7 @@
 # getting game info from the user
 n = gets.to_i
 players = []
-winners = {}
+winners = {} # => {vainqueur => [perdant, perdant, etc]}
 n.times do
   numplayer, signplayer = gets.split
   numplayer = numplayer.to_i
@@ -9,21 +9,9 @@ n.times do
   winners[numplayer] = []
 end
 
-# # entrée
-  # 8 => nombre de joueurs
-  # 4 R => numéro du joueur + le coup qu'il joue
-  # 1 P
-  # 8 P
-  # 3 R
-  # 7 C
-  # 5 S
-  # 6 L
-  # 2 L
 
-# méthode pour dire qui a battu qui dans le duel
-  # => {vainqueur => [perdant]}           1er round
-  # => {vainqueur => [perdant, perdant]}  2e round etc
-def who_wins(array_of_two_players) # => donne le joueur vainqueur || exemple : {2 => "L"}
+# méthode qui donne le joueur vainqueur || exemple en sortie : [{2 => "L"}]
+def who_wins(array_of_two_players)
   player1 = array_of_two_players[0]
   player2 = array_of_two_players[1]
   winner = []
@@ -57,12 +45,9 @@ def who_wins(array_of_two_players) # => donne le joueur vainqueur || exemple : {
     player1[:name] < player2[:name] ? winner << player1 : winner << player2
   end
   winner
-  end
+end
 
-# méthode pour mettre à jour le tableau des joueurs
-# def update_players(loser, players)
-#   players.reject { |player| player == loser }
-# end
+# méthode pour mettre à jour le tableau des joueurs en supprimant les perdants
 def update_players(players, losers)
   losers.each do |loser|
     players.reject! { |player| player == loser }
@@ -70,7 +55,8 @@ def update_players(players, losers)
   players
 end
 
-# méthode pour mettre à jour le tableau des vainqueurs
+# méthode pour mettre à jour le tableau des vainqueurs en supprimant les perdants
+# et en ajoutant le nom du perdant au vainqueur
 def update_winners(winner, loser, winners)
   name_of_loser = loser[:name]
   name_of_winner = winner[:name]
@@ -79,41 +65,32 @@ def update_winners(winner, loser, winners)
   winners
 end
 
-
-# # pour chaque round
-  # grouper les joueurs par 2 => .each_slice(2).to_a
-  # faire un duel au sein de chaque array
-  # récupérer le vainqueur et le perdant
-  # enlever les perdants des tableaux (players & winners) et recommencer => hash.delete(key)
-  # à la fin du jeu, il ne reste qu'un joueur
-
-
+# tant qu'il y a encore des joueurs :
+# étape 1 : on les regroupe par 2 pour créer des sub-arrays 'rounds'
+# étape 2 : on détermine le vainqueur et le perdant de chaque duel
+# étape 3 : on met à jour les listes 'players' et 'winners'
+# étape 4 : on recommence avec les joueurs qui sont encore en lice
 while players.size != 1
   rounds = players.each_slice(2).to_a
   losers = []
   rounds.each do |round|
     winner = who_wins(round)[0]
-    # puts winner
     loser = round.reject { |player| player == winner }.first
-    # puts loser
     losers << loser
     winners = update_winners(winner, loser, winners)
   end
   players = update_players(players, losers)
 end
 
+# méthode qui permet de donner en sortie le format attendu
 def print_answer(winners)
-  one_winner = winners.to_a # [2, 6, 5, 1]
+  one_winner = winners.to_a # { 2 => [6, 5, 1] } => [2, 6, 5, 1]
   losers = one_winner[0][1..]
   [one_winner[0][0], losers.join(' ')]
 end
-# réponse apportée
-# winners = {2=>[6, 5, 1]}
-puts print_answer(winners)
 
-# # sortie
-  # 2 => numéro du vainqueur
-  # 6 5 1 => adversaires du vainqueur dans l'ordre chronologique
+# réponse apportée
+puts print_answer(winners)
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
