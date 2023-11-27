@@ -63,6 +63,7 @@ def calculate_answer(operation, number1, number2)
 end
 
 def from_integer_to_maya(number)
+  # TODO = si nombre très grand, faire une boucle avec i = puissance de vingt
   number_base_twenty = []
   hundreds = number / (20**2)
   number_base_twenty << hundreds unless hundreds == 0
@@ -74,5 +75,4 @@ def from_integer_to_maya(number)
 end
 
 result = calculate_answer(operation, number1, number2)
-# puts "result = #{result}"
 puts from_integer_to_maya(result)
