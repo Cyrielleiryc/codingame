@@ -1,19 +1,10 @@
 # Auto-generated code below aims at helping you parse
 # the standard input according to the problem statement.
 
-# r = gets.to_i
-# l = gets.to_i
+r = gets.to_i
+l = gets.to_i
 
-# lines = [[r]]
-
-# écrire chaque ligne en utilisant celle d'avant
-# grouper les chiffres identiques entre eux
-# afficher le compte puis le chiffre compté
-# recommencer
-# l.times do |l|
-#   line_with_groups = group_numbers(lines[l])
-#   next_line = line_with_groups.map { |group| [group.size, group[0]]}.concat
-# end
+lines = [[r]]
 
 # méthode qui prend un tableau de nombres ex : [1, 1, 4]
 # et retourne un tableau de tableaux d'éléments consécutifs égaux [[1, 1], [4]]
@@ -40,10 +31,16 @@ end
 # méthode qui prend un tableau d'éléments consécutifs égaux [[1, 1], [4]]
 # et retourne une nouvelle ligne => [2, 1, 1, 4]
 def create_line(table)
-  next_line = table.map { |group| [group.size, group[0]]}.flatten
+  table.map { |group| [group.size, group[0]]}.flatten
 end
 
-test_array = [1, 1, 1, 2, 2, 1]
-puts create_line(group_numbers(test_array)).to_s
+# écrire chaque ligne en utilisant celle d'avant
+# grouper les chiffres identiques entre eux
+# afficher le compte puis le chiffre compté
+# recommencer
+(l - 1).times do |a|
+  line_with_groups = group_numbers(lines[a])
+  lines << create_line(line_with_groups)
+end
 
-# puts lines[-1].join(' ')
+puts lines[-1].join(' ')
