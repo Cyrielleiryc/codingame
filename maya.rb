@@ -16,14 +16,16 @@ end
 MAYA_TRANSLATOR = mayas.transpose
 
 def from_maya_to_integer(number)
-  if number.size == 4
-    return MAYA_TRANSLATOR.index(number)
+  number_into_mayan_digits = number.each_slice(4).to_a
+  digits_base_twenty = []
+  number_into_mayan_digits.each do |digit|
+    digits_base_twenty << MAYA_TRANSLATOR.index(digit)
   end
-  new_number = number.each_slice(4).to_a.reverse
-  unity = MAYA_TRANSLATOR.index(new_number[0])
-  tens = MAYA_TRANSLATOR.index(new_number[1]) || 0
-  hundreds = MAYA_TRANSLATOR.index(new_number[2]) || 0
-  unity + tens * 20 + hundreds * 20**2
+  number_base_ten = 0
+  digits_base_twenty.reverse.each_with_index do |d, index|
+    number_base_ten += d * (20 ** index)
+  end
+  number_base_ten
 end
 
 # nombres sous format ["o...", "....", "....", "...."]
@@ -40,7 +42,9 @@ s2.times do
 number2maya << num_2line
 end
 number1 = from_maya_to_integer(number1maya)
+# puts "number1 = #{number1}"
 number2 = from_maya_to_integer(number2maya)
+# puts "number2 = #{number2}"
 
 # récupérer le signe de l'opération
 operation = gets.chomp
@@ -59,13 +63,16 @@ def calculate_answer(operation, number1, number2)
 end
 
 def from_integer_to_maya(number)
-  if number < 20
-    return MAYA_TRANSLATOR[number]
-  end
-  tens = number / 20
-  unity = number - (20 * tens)
-  [MAYA_TRANSLATOR[tens], MAYA_TRANSLATOR[unity]]
+  number_base_twenty = []
+  hundreds = number / (20**2)
+  number_base_twenty << hundreds unless hundreds == 0
+  tens = (number % 20**2) / 20
+  number_base_twenty << tens unless hundreds == 0 && tens == 00
+  unity = number % 20
+  number_base_twenty << unity
+  number_base_twenty.map { |digit| MAYA_TRANSLATOR[digit] }
 end
 
 result = calculate_answer(operation, number1, number2)
+# puts "result = #{result}"
 puts from_integer_to_maya(result)
