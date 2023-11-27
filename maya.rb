@@ -19,10 +19,11 @@ def from_maya_to_integer(number)
   if number.size == 4
     return MAYA_TRANSLATOR.index(number)
   end
-  new_number = number.each_slice(4).to_a
-  tens = MAYA_TRANSLATOR.index(new_number[0])
-  unity = MAYA_TRANSLATOR.index(new_number[1])
-  tens * 20 + unity
+  new_number = number.each_slice(4).to_a.reverse
+  unity = MAYA_TRANSLATOR.index(new_number[0])
+  tens = MAYA_TRANSLATOR.index(new_number[1]) || 0
+  hundreds = MAYA_TRANSLATOR.index(new_number[2]) || 0
+  unity + tens * 20 + hundreds * 20**2
 end
 
 # nombres sous format ["o...", "....", "....", "...."]
@@ -52,6 +53,8 @@ def calculate_answer(operation, number1, number2)
     return number1 - number2
   when '*'
     return number1 * number2
+  when '/'
+    return number1 / number2
   end
 end
 
