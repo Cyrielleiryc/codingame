@@ -8,23 +8,6 @@ h.times do
   mayas << numeral.chars.each_slice(l).to_a
 end
 
-# nombres sous format ["o...", "....", "....", "...."]
-s1 = gets.to_i
-number1 = []
-s1.times do
-  num_1line = gets.chomp
-  number1 << num_1line
-end
-s2 = gets.to_i
-number2 = []
-s2.times do
-  num_2line = gets.chomp
-number2 << num_2line
-end
-
-# récupérer le signe de l'opération
-operation = gets.chomp
-
 # chaque ligne est un tableau [".oo.", "o...", "oo..", "ooo.", "oooo", etc]
 mayas.map! do |line|
   line.map { |group| group.join('') }
@@ -33,15 +16,42 @@ end
 MAYA_TRANSLATOR = mayas.transpose
 
 def from_maya_to_integer(number)
-  MAYA_TRANSLATOR.index(number)
+  if number.size == 4
+    return MAYA_TRANSLATOR.index(number)
+  end
+  new_number = number.each_slice(4).to_a
+  tens = MAYA_TRANSLATOR.index(new_number[0])
+  unity = MAYA_TRANSLATOR.index(new_number[1])
+  tens * 20 + unity
 end
+
+# nombres sous format ["o...", "....", "....", "...."]
+s1 = gets.to_i
+number1maya = []
+s1.times do
+  num_1line = gets.chomp
+  number1maya << num_1line
+end
+s2 = gets.to_i
+number2maya = []
+s2.times do
+  num_2line = gets.chomp
+number2maya << num_2line
+end
+number1 = from_maya_to_integer(number1maya)
+number2 = from_maya_to_integer(number2maya)
+
+# récupérer le signe de l'opération
+operation = gets.chomp
 
 def calculate_answer(operation, number1, number2)
   case operation
   when '+'
-    return from_maya_to_integer(number1) + from_maya_to_integer(number2)
+    return number1 + number2
   when '-'
-    return from_maya_to_integer(number1) - from_maya_to_integer(number2)
+    return number1 - number2
+  when '*'
+    return number1 * number2
   end
 end
 
