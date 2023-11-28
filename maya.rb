@@ -15,8 +15,8 @@ end
 # chaque tableau est un chiffre 0 = [".oo.", "o..o", ".oo.", "...."]
 MAYA_TRANSLATOR = mayas.transpose
 
-def from_maya_to_integer(number)
-  number_into_mayan_digits = number.each_slice(4).to_a
+def from_maya_to_integer(number, l)
+  number_into_mayan_digits = number.each_slice(l).to_a
   digits_base_twenty = []
   number_into_mayan_digits.each do |digit|
     digits_base_twenty << MAYA_TRANSLATOR.index(digit)
@@ -41,8 +41,8 @@ s2.times do
   num_2line = gets.chomp
   number2maya << num_2line
 end
-number1 = from_maya_to_integer(number1maya)
-number2 = from_maya_to_integer(number2maya)
+number1 = from_maya_to_integer(number1maya, l)
+number2 = from_maya_to_integer(number2maya, l)
 
 # récupérer le signe de l'opération
 operation = gets.chomp
