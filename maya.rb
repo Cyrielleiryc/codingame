@@ -28,6 +28,25 @@ def from_maya_to_integer(number, l)
   number_base_ten
 end
 
+# méthode pour trouver la plus grande puissance de 20 comprise dans un nombre
+def find_max_twenty_index(number)
+  i = 0
+  i += 1 until number / 20**i < 20
+  i
+end
+
+def from_integer_to_maya(number)
+  max_index = find_max_twenty_index(number)
+  number_base_twenty = []
+  rest = number
+  (0..max_index).to_a.reverse.each do |p|
+    quotient = rest / 20**p
+    rest = rest % 20**p
+    number_base_twenty << quotient
+  end
+  number_base_twenty.map { |digit| MAYA_TRANSLATOR[digit] }
+end
+
 # nombres sous format ["o...", "....", "....", "...."]
 s1 = gets.to_i
 number1maya = []
@@ -58,27 +77,6 @@ def calculate_answer(operation, number1, number2)
   when '/'
     number1 / number2
   end
-end
-
-# méthode pour trouver la plus grande puissance de 20 comprise dans un nombre
-def find_max_twenty_index(number)
-  i = 0
-  i += 1 until number / 20**i < 20
-  i
-end
-
-def from_integer_to_maya(number)
-  # trouver la plus grande puissance
-  max_index = find_max_twenty_index(number)
-  # partir de la plus grande puissance et réduire le nombre en stockant les quotients dans un tableau
-  number_base_twenty = []
-  rest = number
-  (0..max_index).to_a.reverse.each do |p|
-    quotient = rest / 20**p
-    rest = rest % 20**p
-    number_base_twenty << quotient
-  end
-  number_base_twenty.map { |digit| MAYA_TRANSLATOR[digit] }
 end
 
 result = calculate_answer(operation, number1, number2)
